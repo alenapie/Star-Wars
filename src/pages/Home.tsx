@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { TCharacter, TCharacterResponse } from "../types";
+import { TCharacterResponse } from "../types";
 import axios from "axios";
 import {
   Box,
@@ -11,11 +11,14 @@ import {
   Typography,
 } from "@mui/material";
 import { Character } from "../components/Character";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { selectCharactersList, setCharactersList } from "../store";
 
 const LIMIT = 10;
 
 export const Home = () => {
-  const [characters, setCharacters] = useState<TCharacter[]>([]);
+  const characters = useAppSelector(selectCharactersList);
+  const dispatch = useAppDispatch();
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -25,7 +28,7 @@ export const Home = () => {
   useEffect(() => {
     const getCharacter = async () => {
       const { data } = await axios.get<TCharacterResponse>(URL);
-      setCharacters(data.results);
+      dispatch(setCharactersList({ list: data.results }));
       setCount(Math.ceil(data.count / LIMIT));
     };
     getCharacter();
