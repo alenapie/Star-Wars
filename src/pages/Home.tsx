@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
 import { TCharacter, TCharacterResponse } from "../types";
 import axios from "axios";
-import { Box, Grid, Pagination } from "@mui/material";
+import {
+  Box,
+  List,
+  ListItem,
+  Pagination,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Character } from "../components/Character";
 
 const LIMIT = 10;
@@ -10,7 +18,9 @@ export const Home = () => {
   const [characters, setCharacters] = useState<TCharacter[]>([]);
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
-  const URL = `https://swapi.dev/api/people/?page=${page}`;
+  const [search, setSearch] = useState("");
+
+  const URL = `https://swapi.dev/api/people/?page=${page}&search=${search}`;
 
   useEffect(() => {
     const getCharacter = async () => {
@@ -19,29 +29,54 @@ export const Home = () => {
       setCount(Math.ceil(data.count / LIMIT));
     };
     getCharacter();
-  }, [page]);
+  }, [page, search]);
 
   if (!characters) {
     return <div> Пустой список</div>;
   }
 
   return (
-    <div>
-      <h1>Home</h1>
-      <Box sx={{ flexGrow: 1, p: 1 }}>
-        <Grid container spacing={1} justifyContent="center" alignItems="center">
+    <Box
+      flex={1}
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="space-between"
+      py={3}
+      gap={3}
+      sx={{ overflow: "hidden" }}
+    >
+      <Typography gutterBottom variant="h5" component="div">
+        List of Star Wars characters
+      </Typography>
+      <TextField
+        id="outlined-basic"
+        label="Search for a character"
+        variant="outlined"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+      <Paper
+        sx={{
+          display: "flex",
+          flex: 1,
+          overflow: "auto",
+        }}
+      >
+        <List sx={{ width: "100%" }}>
           {characters.map((character) => (
-            <Character {...character} key={character.name} />
+            <ListItem key={character.name}>
+              <Character {...character} />
+            </ListItem>
           ))}
-        </Grid>
-      </Box>
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 1 }}>
-        <Pagination
-          count={count}
-          shape="rounded"
-          onChange={(_, page) => setPage(page)}
-        />
-      </Box>
-    </div>
+        </List>
+      </Paper>
+
+      <Pagination
+        count={count}
+        shape="rounded"
+        onChange={(_, page) => setPage(page)}
+      />
+    </Box>
   );
 };

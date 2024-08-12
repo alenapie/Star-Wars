@@ -1,17 +1,25 @@
 import { FC } from "react";
 import { TCharacter } from "../types";
-import { ListItem, ListItemAvatar, Avatar, ListItemText } from "@mui/material";
-import List from "@mui/material/List";
-import { localizateGender, stringAvatar } from "../utils";
+import {
+  ListItemAvatar,
+  Avatar,
+  ListItemText,
+  ListItemButton,
+} from "@mui/material";
 
-export const Character: FC<TCharacter> = ({ name, gender }) => (
-  <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
-    <ListItem>
+import { localizateGender, stringAvatar } from "../utils";
+import { Link } from "react-router-dom";
+
+export const Character: FC<TCharacter> = ({ url, name, gender }) => {
+  const id = url.match(/people\/(\d+)\//)?.[1];
+
+  return (
+    <ListItemButton component={Link} to={`details/${id}`}>
       <ListItemAvatar>
         <Avatar>{stringAvatar(name)}</Avatar>
       </ListItemAvatar>
       <ListItemText primary={name} />
-      <ListItemText primary={localizateGender(gender)} />
-    </ListItem>
-  </List>
-);
+      {localizateGender(gender)}
+    </ListItemButton>
+  );
+};

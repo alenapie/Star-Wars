@@ -7,6 +7,7 @@ export type TCharacter = {
     eye_color: string,
     birth_year: string,
     gender: EGender
+    url: string,
 }
 
 export type TCharacterResponse = {
