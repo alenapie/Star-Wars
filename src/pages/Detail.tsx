@@ -5,11 +5,13 @@ import axios from "axios";
 import { localizateGender } from "../utils";
 import {
   CardContent,
-  Typography,
-  CardActions,
   Button,
   Card,
   Box,
+  List,
+  ListItemText,
+  ListItem,
+  ListItemIcon,
 } from "@mui/material";
 
 export const Detail = () => {
@@ -33,65 +35,54 @@ export const Detail = () => {
   return (
     <Box
       sx={{
-        display: "flex",
-        justifyContent: "center",
         alignItems: "center",
-        height: "70vh",
-        py: 4,
         flexDirection: "column",
       }}
+      gap={2}
+      py={4}
+      display="flex"
     >
-      <Card
-        sx={{
-          margin: 2,
-          display: "flex",
-          flex: 1,
-          height: "100%",
-          alignItem: "center",
-        }}
-      >
-        <Box alignItems="center" justifyContent="center" width="100%">
-          <CardContent
-            sx={{
-              alignItems: "center",
-              overflow: "hidden",
-              display: "flex",
-              flexDirection: "column",
-              alignItem: "center",
-              py: 3,
-              mx: 5,
-              gap: 4,
-            }}
-          >
-            <Typography gutterBottom variant="h5" component="div">
-              {detail.name}
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              Birth year: {detail.birth_year}
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              Mass: {detail.mass}
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              Hair color: {detail.hair_color}
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              Skin color: {detail.skin_color}
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              Eye color: {detail.eye_color}
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              Genger: {localizateGender(detail.gender)}
-            </Typography>
-          </CardContent>
-        </Box>
+      <Card sx={{ minWidth: 300 }}>
+        <CardContent>
+          <List>
+            <ListItem>
+              <ListItemText primary="Name:" secondary={detail.name} />
+            </ListItem>
+            <ListItem>
+              <ListItemText
+                primary="Birth year:"
+                secondary={detail.birth_year}
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Mass:" secondary={detail.mass} />
+            </ListItem>
+
+            <ListItem>
+              <ListItemText
+                primary="Hair color:"
+                secondary={detail.hair_color}
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemText
+                primary="Skin color:"
+                secondary={detail.skin_color}
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Eye color:" secondary={detail.eye_color} />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Genger:" />
+              <ListItemIcon>{localizateGender(detail.gender)}</ListItemIcon>
+            </ListItem>
+          </List>
+        </CardContent>
       </Card>
-      <CardActions>
-        <Link to={`/`}>
-          <Button variant="outlined">GO BACK</Button>
-        </Link>
-      </CardActions>
+      <Link to={`/`}>
+        <Button variant="outlined">GO BACK</Button>
+      </Link>
     </Box>
   );
 };

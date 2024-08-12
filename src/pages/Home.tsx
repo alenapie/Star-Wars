@@ -63,7 +63,7 @@ export const Home = () => {
           overflow: "auto",
         }}
       >
-        <List sx={{ width: "100%" }}>
+        <List sx={{ width: "100%", minWidth: 300 }}>
           {characters.map((character) => (
             <ListItem key={character.name}>
               <Character {...character} />
