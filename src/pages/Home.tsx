@@ -12,14 +12,19 @@ import {
 } from "@mui/material";
 import { Character } from "../components/Character";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { selectCharactersList, setCharactersList } from "../store";
+import {
+  selectCharactersCount,
+  selectCharactersList,
+  setCharactersList,
+} from "../store";
 
 const LIMIT = 10;
 
 export const Home = () => {
   const characters = useAppSelector(selectCharactersList);
   const dispatch = useAppDispatch();
-  const [count, setCount] = useState(0);
+  const count = useAppSelector(selectCharactersCount);
+  // const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
 
@@ -28,9 +33,16 @@ export const Home = () => {
   useEffect(() => {
     const getCharacter = async () => {
       const { data } = await axios.get<TCharacterResponse>(URL);
-      dispatch(setCharactersList({ list: data.results }));
-      setCount(Math.ceil(data.count / LIMIT));
+      const count = Math.ceil(data.count / LIMIT);
+
+      dispatch(
+        setCharactersList({
+          list: data.results,
+          count,
+        })
+      );
     };
+
     getCharacter();
   }, [page, search]);
 
