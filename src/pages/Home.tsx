@@ -24,7 +24,6 @@ export const Home = () => {
   const characters = useAppSelector(selectCharactersList);
   const dispatch = useAppDispatch();
   const count = useAppSelector(selectCharactersCount);
-  // const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
 
@@ -39,7 +38,7 @@ export const Home = () => {
         setCharactersList({
           list: data.results,
           count,
-        })
+        }),
       );
     };
 
