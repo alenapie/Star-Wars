@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { TCharacter } from "../types";
 import axios from "axios";
 import { localizateGender } from "../utils";
@@ -13,24 +13,32 @@ import {
   ListItem,
   ListItemIcon,
 } from "@mui/material";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { selectCharacterCard, setCharacterCard } from "../store";
 
 export const Detail = () => {
   const { id } = useParams();
-  const [detail, setDetail] = useState<TCharacter>();
+  const chatacter = useAppSelector(selectCharacterCard);
+  const dispatch = useAppDispatch();
   const URLCharacter = `https://swapi.dev/api/people/${id}`;
 
   useEffect(() => {
     const getDetail = async () => {
       const { data } = await axios.get<TCharacter>(URLCharacter);
-      setDetail(data);
+
+      dispatch(
+        setCharacterCard({
+          card: data,
+        })
+      );
     };
+
     getDetail();
   }, []);
 
-  if (!detail) {
+  if (!chatacter) {
     return null;
   }
-  console.log(detail);
 
   return (
     <Box
@@ -46,36 +54,39 @@ export const Detail = () => {
         <CardContent>
           <List>
             <ListItem>
-              <ListItemText primary="Name:" secondary={detail.name} />
+              <ListItemText primary="Name:" secondary={chatacter.name} />
             </ListItem>
             <ListItem>
               <ListItemText
                 primary="Birth year:"
-                secondary={detail.birth_year}
+                secondary={chatacter.birth_year}
               />
             </ListItem>
             <ListItem>
-              <ListItemText primary="Mass:" secondary={detail.mass} />
+              <ListItemText primary="Mass:" secondary={chatacter.mass} />
             </ListItem>
 
             <ListItem>
               <ListItemText
                 primary="Hair color:"
-                secondary={detail.hair_color}
+                secondary={chatacter.hair_color}
               />
             </ListItem>
             <ListItem>
               <ListItemText
                 primary="Skin color:"
-                secondary={detail.skin_color}
+                secondary={chatacter.skin_color}
               />
             </ListItem>
             <ListItem>
-              <ListItemText primary="Eye color:" secondary={detail.eye_color} />
+              <ListItemText
+                primary="Eye color:"
+                secondary={chatacter.eye_color}
+              />
             </ListItem>
             <ListItem>
               <ListItemText primary="Genger:" />
-              <ListItemIcon>{localizateGender(detail.gender)}</ListItemIcon>
+              <ListItemIcon>{localizateGender(chatacter.gender)}</ListItemIcon>
             </ListItem>
           </List>
         </CardContent>
